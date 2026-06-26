@@ -39,7 +39,7 @@ export const Welcome: React.FC = () => {
         </div>
 
         <div className="welcome-actions">
-          <Button variant="ai" size="lg" onClick={() => navigate('/dashboard')}>
+          <Button variant="ai" size="lg" onClick={() => navigate('/signup')}>
             Get Started
           </Button>
           <Button variant="ghost" size="lg">

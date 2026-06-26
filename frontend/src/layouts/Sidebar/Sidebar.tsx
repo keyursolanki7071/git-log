@@ -1,10 +1,18 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, FolderOpen, Activity, Settings, GitPullRequest, Plus } from 'lucide-react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { LayoutDashboard, FolderOpen, Activity, LogOut, GitPullRequest, Plus } from 'lucide-react';
 import { Button } from '../../components/Button/Button';
+import { authApi } from '../../api/auth';
 import './Sidebar.css';
 
 export const Sidebar: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    authApi.logout();
+    navigate('/login');
+  };
+
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
@@ -36,10 +44,10 @@ export const Sidebar: React.FC = () => {
               <Plus size={16} /> New Report
             </Button>
           </div>
-          <NavLink to="/settings" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <Settings size={18} />
-            <span>Settings</span>
-          </NavLink>
+          <button onClick={handleLogout} className="nav-item" style={{ background: 'transparent', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left', fontFamily: 'inherit' }}>
+            <LogOut size={18} />
+            <span>Logout</span>
+          </button>
         </div>
       </div>
     </aside>
