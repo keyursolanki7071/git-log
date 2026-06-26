@@ -3,6 +3,11 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from app.models.base import Base, UUIDMixin, TimestampMixin
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.models.user import User
+    from app.models.integration import Integration
 
 class Project(Base, UUIDMixin, TimestampMixin):
     __tablename__ = "projects"

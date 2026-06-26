@@ -1,0 +1,63 @@
+.connected-accounts-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.accounts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.account-card {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.account-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.account-card-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.account-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--text-primary);
+}
+
+.account-details h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.1rem;
+}
+
+.loading-state, .empty-state {
+  text-align: center;
+  padding: 4rem;
+  color: var(--text-secondary);
+  background: var(--surface-1);
+  border-radius: 8px;
+  border: 1px dashed var(--border-light);
+}
+
+.empty-state p {
+  margin-bottom: 1.5rem;
+}

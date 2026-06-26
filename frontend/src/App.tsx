@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { DashboardLayout } from './layouts/DashboardLayout/DashboardLayout';
 import { Dashboard } from './pages/Dashboard/Dashboard';
 import { Projects } from './pages/Projects/Projects';
+import { ConnectedAccounts } from './pages/ConnectedAccounts/ConnectedAccounts';
 import { Welcome } from './pages/Welcome/Welcome';
 import { ConnectGitHub } from './pages/ConnectGitHub/ConnectGitHub';
 import { SelectRepository } from './pages/SelectRepository/SelectRepository';
@@ -29,7 +30,8 @@ function App() {
           <Route path="/" element={<DashboardLayout />}>
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
-            <Route path="projects" element={<Projects />} />
+            <Route path="accounts" element={<ConnectedAccounts />} />
+            <Route path="repositories" element={<Projects />} />
             <Route path="activity" element={<ActivityLog />} />
             <Route path="create" element={<CreateProject />} />
             <Route path="report-preview" element={<ReportPreview />} />

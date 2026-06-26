@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, FolderOpen, Activity, LogOut, GitPullRequest, Plus } from 'lucide-react';
+import { LayoutDashboard, FolderOpen, Activity, LogOut, GitPullRequest } from 'lucide-react';
 import { Button } from '../../components/Button/Button';
 import { authApi } from '../../api/auth';
 import './Sidebar.css';
@@ -28,9 +28,13 @@ export const Sidebar: React.FC = () => {
             <LayoutDashboard size={18} />
             <span>Dashboard</span>
           </NavLink>
-          <NavLink to="/projects" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+          <NavLink to="/accounts" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <FolderOpen size={18} />
-            <span>Projects</span>
+            <span>Accounts</span>
+          </NavLink>
+          <NavLink to="/repositories" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+            <GitPullRequest size={18} />
+            <span>Repositories</span>
           </NavLink>
           <NavLink to="/activity" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <Activity size={18} />
@@ -39,11 +43,6 @@ export const Sidebar: React.FC = () => {
         </div>
 
         <div className="sidebar-section mt-auto">
-          <div className="px-3 mb-2">
-            <Button variant="ai" size="sm" fullWidth>
-              <Plus size={16} /> New Report
-            </Button>
-          </div>
           <button onClick={handleLogout} className="nav-item" style={{ background: 'transparent', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left', fontFamily: 'inherit' }}>
             <LogOut size={18} />
             <span>Logout</span>
