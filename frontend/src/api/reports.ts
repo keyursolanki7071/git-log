@@ -7,6 +7,12 @@ export interface ReportContent {
   key_achievements: string[];
   areas_of_concern: string[];
   developer_metrics: Record<string, string>;
+  all_commits?: {
+    author: string;
+    date: string;
+    message: string;
+    summary: string;
+  }[];
 }
 
 export interface Report {

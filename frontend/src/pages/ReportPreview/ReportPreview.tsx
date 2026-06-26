@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card } from '../../components/Card/Card';
 import { Button } from '../../components/Button/Button';
-import { ArrowLeft, CheckCircle2, AlertTriangle, Target, BarChart2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, AlertTriangle, Target, BarChart2, Calendar, GitCommit } from 'lucide-react';
 import { reportsApi, type Report } from '../../api/reports';
 import './ReportPreview.css';
 
@@ -127,6 +127,36 @@ export const ReportPreview: React.FC = () => {
           </div>
         </Card>
       </div>
+
+      {content.all_commits && content.all_commits.length > 0 && (
+        <div className="daily-activity-section" style={{ marginTop: '2rem' }}>
+          <h2 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <GitCommit size={24} className="text-primary" />
+            All Commits
+          </h2>
+          <Card className="daily-card">
+            <div className="card-body">
+              <div className="commits-list" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {content.all_commits.map((commit, cIdx) => (
+                  <div key={cIdx} className="commit-item" style={{ padding: '1rem', backgroundColor: 'var(--color-bg-secondary)', borderRadius: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                      <GitCommit size={16} className="text-primary" />
+                      <strong>{commit.author}</strong>
+                      <span style={{ fontSize: '0.85rem', color: 'var(--color-outline)' }}>
+                        • {new Date(commit.date).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <p style={{ margin: '0 0 8px 0', color: 'var(--color-text)' }}>{commit.summary}</p>
+                    <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--color-outline)', fontStyle: 'italic' }}>
+                      Original: {commit.message}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
   );
 };
