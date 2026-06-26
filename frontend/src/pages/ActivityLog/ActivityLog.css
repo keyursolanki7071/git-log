@@ -1,0 +1,51 @@
+.activity-log-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-container-padding);
+}
+
+.event-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+}
+
+.text-outline {
+  color: var(--color-outline);
+}
+
+.status-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.status-cell.success {
+  color: #059669; /* Emerald 600 */
+}
+
+.status-cell.error {
+  color: var(--color-error);
+}
+
+.code-font {
+  font-family: var(--font-family-code);
+  font-size: 12px;
+  color: var(--color-on-surface-variant);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.page-info {
+  font-size: 13px;
+  color: var(--color-on-surface-variant);
+}

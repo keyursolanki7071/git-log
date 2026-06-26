@@ -1,0 +1,119 @@
+.report-preview-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-container-padding);
+}
+
+.report-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.report-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.report-document {
+  min-height: 600px;
+}
+
+.doc-header {
+  border-bottom: 1px solid var(--color-surface-container);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.doc-content p {
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.doc-list {
+  padding-left: 24px;
+  margin-bottom: 24px;
+}
+
+.doc-list li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.ai-insight-box {
+  background: var(--color-surface-container-low);
+  border-left: 3px solid var(--ai-gradient-start);
+  padding: 16px;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin-top: 16px;
+}
+
+.ai-insight-box p {
+  margin-bottom: 0;
+  font-size: 13px;
+}
+
+.stats-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-surface-container);
+}
+
+.stat-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.text-success { color: #059669; }
+.text-danger { color: var(--color-error); }
+
+.contributor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contributor-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-container);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.contributor-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.contributor-info .name {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.contributor-info .commits {
+  font-size: 12px;
+  color: var(--color-outline);
+}

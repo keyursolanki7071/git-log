@@ -1,0 +1,71 @@
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-container-padding);
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-gutter);
+}
+
+.metric-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.metric-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-container);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.metric-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-gutter);
+}
+
+.report-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+}
+
+.ai-icon {
+  color: var(--ai-gradient-start);
+}
+
+.text-icon {
+  color: var(--color-outline);
+}
+
+.table-loader {
+  width: 120px;
+}
