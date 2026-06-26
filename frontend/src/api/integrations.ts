@@ -32,4 +32,14 @@ export const integrationsApi = {
     });
     return response.data;
   },
+
+  getBranches: async (integrationId: string, repositoryFullName: string) => {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${API_URL}/integrations/${integrationId}/repositories/${repositoryFullName}/branches`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  },
 };

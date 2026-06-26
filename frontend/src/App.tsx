@@ -34,7 +34,7 @@ function App() {
             <Route path="repositories" element={<Projects />} />
             <Route path="activity" element={<ActivityLog />} />
             <Route path="create" element={<CreateProject />} />
-            <Route path="report-preview" element={<ReportPreview />} />
+            <Route path="reports/:id" element={<ReportPreview />} />
           </Route>
         </Route>
       </Routes>

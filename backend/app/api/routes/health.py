@@ -8,4 +8,4 @@ async def health_check():
     """
     Check if the API is running successfully.
     """
-    return {"status": "ok", "message": "GitLog API is running."}
+    return {"status": "ok", "message": "GitLog API is running.", "test": 1}

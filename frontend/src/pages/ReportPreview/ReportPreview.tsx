@@ -1,114 +1,131 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Card } from '../../components/Card/Card';
 import { Button } from '../../components/Button/Button';
-import { Badge } from '../../components/Badge/Badge';
-import { ArrowLeft, Download, Share2, Copy } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, AlertTriangle, Target, BarChart2 } from 'lucide-react';
+import { reportsApi, type Report } from '../../api/reports';
 import './ReportPreview.css';
 
 export const ReportPreview: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [report, setReport] = useState<Report | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!id) return;
+    const fetchReport = async () => {
+      try {
+        const data = await reportsApi.getReport(id);
+        setReport(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReport();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="report-preview-page">
+        <div style={{ padding: '4rem', textAlign: 'center', color: 'var(--color-outline)' }}>Loading report...</div>
+      </div>
+    );
+  }
+
+  if (!report || report.status !== 'COMPLETED' || !report.content) {
+    return (
+      <div className="report-preview-page">
+        <header className="page-header">
+          <Button variant="ghost" onClick={() => navigate('/activity')} style={{ marginBottom: '1rem' }}>
+            <ArrowLeft size={16} style={{ marginRight: '8px' }} /> Back to Activity Log
+          </Button>
+          <h2>Report not available or still processing</h2>
+        </header>
+      </div>
+    );
+  }
+
+  const { content } = report;
 
   return (
     <div className="report-preview-page">
-      <header className="page-header mb-4">
-        <div>
-          <div className="flex-center-gap mb-2">
-            <button className="back-btn" onClick={() => navigate('/dashboard')}>
-              <ArrowLeft size={16} /> Back to Dashboard
-            </button>
+      <header className="page-header">
+        <div style={{ width: '100%' }}>
+          <Button variant="ghost" onClick={() => navigate('/activity')} style={{ marginBottom: '1rem' }}>
+            <ArrowLeft size={16} style={{ marginRight: '8px' }} /> Back to Activity Log
+          </Button>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div>
+              <h1>Engineering Velocity Report</h1>
+              <p className="text-body-sm" style={{ marginTop: '4px' }}>
+                <strong>{report.repository_name}</strong> • {new Date(report.date_from).toLocaleDateString()} to {new Date(report.date_to).toLocaleDateString()}
+              </p>
+            </div>
+            <div className="report-meta">
+              Generated: {new Date(report.created_at).toLocaleString()}
+            </div>
           </div>
-          <h1>Q2 Engineering Velocity</h1>
-          <div className="report-meta">
-            <Badge variant="success">Finalized</Badge>
-            <span className="text-body-sm text-outline">Generated on Jun 26, 2026</span>
-          </div>
-        </div>
-        <div className="header-actions">
-          <Button variant="secondary" size="md">
-            <Copy size={16} /> Copy Link
-          </Button>
-          <Button variant="secondary" size="md">
-            <Share2 size={16} /> Share
-          </Button>
-          <Button variant="primary" size="md">
-            <Download size={16} /> Export PDF
-          </Button>
         </div>
       </header>
 
-      <div className="report-grid">
-        <div className="report-main">
-          <Card padding="lg" className="report-document">
-            <div className="doc-header">
-              <h2>Executive Summary</h2>
+      <div className="report-content-grid">
+        <Card className="summary-card">
+          <div className="card-header">
+            <Target size={20} className="text-primary" />
+            <h3>Executive Summary</h3>
+          </div>
+          <div className="card-body">
+            <p>{content.executive_summary}</p>
+          </div>
+        </Card>
+
+        <div className="two-col-grid">
+          <Card className="achievements-card">
+            <div className="card-header">
+              <CheckCircle2 size={20} style={{ color: 'var(--color-success)' }} />
+              <h3>Key Achievements</h3>
             </div>
-            <div className="doc-content">
-              <p>
-                During Q2, the engineering team maintained a high velocity across the core repositories. 
-                A significant portion of the effort (42%) was dedicated to resolving technical debt within the legacy API, 
-                resulting in a 15% reduction in latency for P99 requests.
-              </p>
-              
-              <h3 className="mt-4 mb-2">Key Themes</h3>
-              <ul className="doc-list">
-                <li><strong>Performance Optimization:</strong> Major rewrites to the caching layer in `payment-service`.</li>
-                <li><strong>Security Patches:</strong> Routine dependency bumps and mitigation of 3 CVEs.</li>
-                <li><strong>Feature Development:</strong> Launch of the new AI reporting dashboard.</li>
+            <div className="card-body">
+              <ul className="custom-list">
+                {content.key_achievements.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
               </ul>
+            </div>
+          </Card>
 
-              <h3 className="mt-4 mb-2">AI Insights</h3>
-              <div className="ai-insight-box">
-                <p>
-                  The AI has identified a recurring pattern of merge conflicts in the `src/auth/` directory. 
-                  It is recommended to split this module into smaller, independent components to reduce developer friction.
-                </p>
-              </div>
+          <Card className="concerns-card">
+            <div className="card-header">
+              <AlertTriangle size={20} style={{ color: 'var(--color-warning)' }} />
+              <h3>Areas of Concern</h3>
+            </div>
+            <div className="card-body">
+              <ul className="custom-list">
+                {content.areas_of_concern.length > 0 ? content.areas_of_concern.map((item, i) => (
+                  <li key={i}>{item}</li>
+                )) : <li>No significant concerns detected.</li>}
+              </ul>
             </div>
           </Card>
         </div>
 
-        <div className="report-sidebar">
-          <Card padding="md" className="stats-card mb-4">
-            <h3 className="mb-3">Repository Stats</h3>
-            <div className="stat-row">
-              <span className="text-outline">Total Commits</span>
-              <strong>1,204</strong>
-            </div>
-            <div className="stat-row">
-              <span className="text-outline">Active Devs</span>
-              <strong>8</strong>
-            </div>
-            <div className="stat-row">
-              <span className="text-outline">Lines Added</span>
-              <strong className="text-success">+14,592</strong>
-            </div>
-            <div className="stat-row">
-              <span className="text-outline">Lines Deleted</span>
-              <strong className="text-danger">-8,401</strong>
-            </div>
-          </Card>
-
-          <Card padding="md">
-            <h3 className="mb-3">Top Contributors</h3>
-            <div className="contributor-list">
-              <div className="contributor-item">
-                <div className="avatar">JD</div>
-                <div className="contributor-info">
-                  <span className="name">Jane Doe</span>
-                  <span className="commits">342 commits</span>
-                </div>
+        <Card className="metrics-card">
+          <div className="card-header">
+            <BarChart2 size={20} className="text-primary" />
+            <h3>Developer Metrics</h3>
+          </div>
+          <div className="card-body metrics-grid-inner">
+            {Object.entries(content.developer_metrics || {}).map(([key, val]) => (
+              <div key={key} className="metric-item">
+                <span className="metric-label">{key.replace(/_/g, ' ')}</span>
+                <span className="metric-value">{val}</span>
               </div>
-              <div className="contributor-item">
-                <div className="avatar">AS</div>
-                <div className="contributor-info">
-                  <span className="name">Alex Smith</span>
-                  <span className="commits">289 commits</span>
-                </div>
-              </div>
-            </div>
-          </Card>
-        </div>
+            ))}
+          </div>
+        </Card>
       </div>
     </div>
   );

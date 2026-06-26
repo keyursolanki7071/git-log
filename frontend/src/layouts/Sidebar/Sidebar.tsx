@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, FolderOpen, Activity, LogOut, GitPullRequest } from 'lucide-react';
-import { Button } from '../../components/Button/Button';
+
 import { authApi } from '../../api/auth';
 import './Sidebar.css';
 

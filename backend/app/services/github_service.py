@@ -80,4 +80,69 @@ class GitHubService:
                 
             return response.json()
 
+    async def get_repository_commits(self, access_token: str, repository_name: str, since: str, until: str, branch: str | None = None) -> list[dict] | None:
+        """
+        Fetches the commits for a specific repository within a date range.
+        repository_name should be formatted as "owner/repo".
+        since and until should be ISO 8601 formatted strings (e.g., "YYYY-MM-DDTHH:MM:SSZ").
+        branch is the name of the branch to get commits from.
+        """
+        async with httpx.AsyncClient() as client:
+            params = {"since": since, "until": until, "per_page": 100}
+            if branch:
+                params["sha"] = branch
+                
+            response = await client.get(
+                f"https://api.github.com/repos/{repository_name}/commits",
+                params=params,
+                headers={
+                    "Authorization": f"Bearer {access_token}",
+                    "Accept": "application/vnd.github.v3+json",
+                },
+            )
+            
+            if response.status_code != 200:
+                print(f"Failed to fetch commits: {response.text}")
+                return None
+                
+            raw_commits = response.json()
+            commits = []
+            for c in raw_commits:
+                commit_info = c.get('commit', {})
+                commits.append({
+                    'sha': c.get('sha'),
+                    'message': commit_info.get('message', ''),
+                    'author': commit_info.get('author', {}).get('name', 'Unknown'),
+                    'date': commit_info.get('author', {}).get('date', '')
+                })
+            return commits
+
+    async def get_repository_branches(self, access_token: str, repository_name: str) -> list[dict] | None:
+        """
+        Fetches the branches for a specific repository.
+        repository_name should be formatted as "owner/repo".
+        """
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"https://api.github.com/repos/{repository_name}/branches",
+                params={"per_page": 100},
+                headers={
+                    "Authorization": f"Bearer {access_token}",
+                    "Accept": "application/vnd.github.v3+json",
+                },
+            )
+            
+            if response.status_code != 200:
+                print(f"Failed to fetch branches: {response.text}")
+                return None
+                
+            raw_branches = response.json()
+            branches = []
+            for b in raw_branches:
+                branches.append({
+                    'name': b.get('name'),
+                    'commit_sha': b.get('commit', {}).get('sha')
+                })
+            return branches
+
 github_service = GitHubService()

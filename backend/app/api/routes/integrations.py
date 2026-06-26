@@ -68,3 +68,36 @@ async def list_repositories(
         raise HTTPException(status_code=500, detail="Failed to fetch repositories from GitHub")
         
     return repos
+
+@router.get("/{integration_id}/repositories/{owner}/{repo}/branches")
+async def list_branches(
+    integration_id: uuid.UUID,
+    owner: str,
+    repo: str,
+    current_user: Annotated[User, Depends(get_current_user)],
+    session: Annotated[AsyncSession, Depends(get_db)]
+) -> list[dict[str, Any]]:
+    """
+    List GitHub branches for a specific repository.
+    """
+    result = await session.execute(
+        select(Integration).where(
+            Integration.id == integration_id,
+            Integration.user_id == current_user.id
+        )
+    )
+    integration = result.scalar_one_or_none()
+    
+    if not integration:
+        raise HTTPException(status_code=404, detail="Integration not found")
+        
+    if integration.provider != "github":
+        raise HTTPException(status_code=400, detail="Only GitHub integrations are supported")
+        
+    repository_name = f"{owner}/{repo}"
+    branches = await github_service.get_repository_branches(integration.access_token, repository_name)
+    
+    if branches is None:
+        raise HTTPException(status_code=500, detail="Failed to fetch branches from GitHub")
+        
+    return branches
